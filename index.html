@@ -2,286 +2,961 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#07111f">
-<meta name="description" content="DNAInsight is a beginner-friendly interactive DNA sequence analysis tool.">
-<title>DNAInsight | Sequence Lab</title>
-<style>
-:root {
-  color-scheme: dark;
-  --bg: #07111f;
-  --panel: #101d30;
-  --line: #25374d;
-  --cyan: #53f5e5;
-  --violet: #b5a0ff;
-  --text: #eff7ff;
-  --muted: #9eafc5;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0; background:
-    radial-gradient(ellipse at 15% 0%, #15314a 0%, transparent 42%),
-    radial-gradient(ellipse at 100% 30%, #241943 0%, transparent 35%),
-    var(--bg);
-  color: var(--text); font-family: system-ui, sans-serif;
-  min-height: 100vh;
-}
-header, main, footer { width: min(1080px, 92%); margin: auto; }
-header {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:22px 0; gap:12px; border-bottom:1px solid var(--line);
-}
-.brand { font-size:21px; font-weight:800; letter-spacing:-.8px; }
-.brand span { color:var(--cyan); }
-.tag { color:var(--muted); font-size:12px; }
-.hero { padding:46px 0 28px; }
-.eyebrow {
-  color:var(--cyan); text-transform:uppercase; letter-spacing:2px;
-  font-size:11px; font-weight:800;
-}
-h1 { font-size:clamp(35px,7vw,64px); line-height:1.05; margin:12px 0; letter-spacing:-2px; }
-h1 span {
-  background:linear-gradient(90deg,var(--cyan),var(--violet));
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-}
-p { line-height:1.7; }
-.hero p, .muted { color:var(--muted); }
-.layout { display:grid; grid-template-columns:1.1fr .9fr; gap:18px; }
-.card {
-  background:linear-gradient(145deg,#122138f5,#0c1727f5);
-  border:1px solid var(--line); border-radius:18px; padding:22px;
-  min-width:0; box-shadow:0 15px 50px #0002;
-}
-.card h2 { margin-top:0; font-size:19px; }
-label { display:block; margin:16px 0 8px; font-size:13px; color:#c4d5e9; }
-textarea, input, select {
-  width:100%; border:1px solid #344961; border-radius:10px;
-  background:#071321; color:var(--text); padding:13px;
-  font:inherit; outline:none;
-}
-textarea { min-height:150px; resize:vertical; font-family:monospace; }
-textarea:focus, input:focus, select:focus { border-color:var(--cyan); }
-button {
-  border:1px solid #3a536d; border-radius:10px; padding:11px 14px;
-  background:#172a40; color:var(--text); font-weight:700;
-  cursor:pointer; transition:transform .2s,border-color .2s;
-}
-button:hover { border-color:var(--cyan); transform:translateY(-2px); }
-.primary { background:var(--cyan); color:#06151b; border-color:var(--cyan); }
-.actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:13px; }
-.hint { font-size:12px; color:var(--muted); }
-.status { font-size:13px; margin-top:12px; min-height:20px; }
-.stats { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.stat { background:#091525; border:1px solid var(--line); border-radius:12px; padding:15px; }
-.stat small { display:block; color:var(--muted); margin-bottom:8px; }
-.stat strong { font-size:26px; color:var(--cyan); overflow-wrap:anywhere; }
-.bar { display:flex; height:13px; border-radius:8px; overflow:hidden; margin:15px 0; background:#26354b; }
-.bar span { transition:width .4s; }
-.a {background:#4da3ff}.t {background:#ffb454}
-.g {background:#65e6a5}.c {background:#bb91ff}
-.legend { display:flex; flex-wrap:wrap; gap:12px; font-size:12px; color:var(--muted); }
-.dot {display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
-.results { margin-top:18px; }
-.result-line { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); font-size:14px; }
-.sequence {
-  font-family:monospace; overflow-wrap:anywhere; line-height:1.9;
-  color:var(--cyan); background:#071321; border-radius:10px;
-  padding:12px; margin-top:12px; font-size:13px;
-}
-.notice { background:#172c39; border:1px solid #28505a; padding:12px; border-radius:10px; font-size:12px; color:#c5e9e8; margin-top:16px; }
-footer { border-top:1px solid var(--line); margin-top:35px; padding:22px 0 35px; color:var(--muted); font-size:12px; }
-.hidden { display:none; }
-@media(max-width:700px) {
-  .layout {grid-template-columns:1fr}
-  .hero {padding-top:32px}
-  .card {padding:17px}
-  h1 {letter-spacing:-1.4px}
-}
-@media(prefers-reduced-motion:reduce) {
-  *,*::before,*::after {scroll-behavior:auto!important;transition:none!important}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fa">
+  <meta name="description" content="DNAInsight — a clean, browser-based DNA sequence analysis tool for learning bioinformatics.">
+  <title>DNAInsight — Explore the Code of Life</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6f8;
+      --paper: #ffffff;
+      --ink: #20252d;
+      --muted: #747d89;
+      --line: #e3e7ec;
+      --cyan: #00bfe8;
+      --cyan-dark: #007e9e;
+      --cyan-soft: #e5faff;
+      --graphite: #272c34;
+      --good: #16835f;
+      --bad: #c23d49;
+      --shadow: 0 16px 48px rgba(35, 47, 62, .07);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 85% 0%, rgba(0, 191, 232, .10), transparent 32rem),
+        var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button, select { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible,
+    textarea:focus-visible, a:focus-visible {
+      outline: 3px solid rgba(0, 191, 232, .42);
+      outline-offset: 3px;
+    }
+
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 32px)); margin: auto; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(248, 250, 252, .82);
+      border-bottom: 1px solid rgba(220, 226, 233, .8);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      min-height: 68px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 750;
+      letter-spacing: -.65px;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: #063542;
+      background: linear-gradient(145deg, #a4f1ff, #00bfe8);
+      box-shadow: 0 5px 15px rgba(0, 191, 232, .20);
+      font-size: 21px;
+    }
+
+    .nav-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.1px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    main { padding-bottom: 52px; }
+
+    .hero {
+      padding: 58px 0 34px;
+      text-align: center;
+      animation: rise .7s ease both;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #d9f3f8;
+      background: rgba(255,255,255,.78);
+      border-radius: 999px;
+      padding: 7px 12px;
+      color: var(--cyan-dark);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.25px;
+      text-transform: uppercase;
+    }
+
+    .pulse {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(0,191,232,.12);
+    }
+
+    h1 {
+      margin: 19px 0 12px;
+      font-size: clamp(38px, 8vw, 68px);
+      letter-spacing: -.065em;
+      line-height: 1.02;
+      font-weight: 780;
+    }
+
+    .gradient {
+      color: transparent;
+      background: linear-gradient(100deg, #20252d 15%, #008fb1 90%);
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .hero p {
+      max-width: 570px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: clamp(14px, 2.5vw, 17px);
+    }
+
+    .privacy {
+      margin-top: 17px;
+      color: #697583;
+      font-size: 12px;
+    }
+
+    .privacy span { color: var(--good); font-weight: 700; }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      background: rgba(255,255,255,.94);
+      border: 1px solid rgba(225,230,236,.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      min-width: 0;
+      animation: rise .65s ease both;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 22px 22px 0;
+    }
+
+    .step {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--cyan-dark);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+    }
+
+    h2 { margin: 0; font-size: 20px; letter-spacing: -.55px; }
+    h3 { margin: 0; font-size: 14px; letter-spacing: -.2px; }
+    .sub { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
+
+    .card-body { padding: 20px 22px 22px; }
+
+    .field-label {
+      display: block;
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    textarea, select, input[type="text"] {
+      width: 100%;
+      color: var(--ink);
+      background: #fafbfc;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+
+    textarea {
+      min-height: 180px;
+      padding: 15px;
+      resize: vertical;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    textarea:focus, select:focus, input:focus {
+      border-color: var(--cyan);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(0,191,232,.09);
+      outline: none;
+    }
+
+    select { padding: 12px; }
+    .hint { color: var(--muted); font-size: 11px; margin: 8px 0 0; }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      align-items: center;
+    }
+
+    .row.between { justify-content: space-between; }
+    .actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 15px; }
+
+    .btn {
+      min-height: 43px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 10px 15px;
+      font-size: 12px;
+      font-weight: 750;
+      transition: transform .18s, box-shadow .18s, background .18s;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: scale(.98); }
+    .primary {
+      color: #052d38;
+      background: linear-gradient(110deg, #7deaff, #00c4ec);
+      box-shadow: 0 6px 15px rgba(0,191,232,.17);
+    }
+    .primary:hover { box-shadow: 0 9px 22px rgba(0,191,232,.26); }
+    .secondary { color: var(--ink); background: white; border-color: var(--line); }
+    .secondary:hover { background: #f6f9fb; }
+    .danger { color: #a43843; background: #fff5f5; border-color: #f5dfe1; }
+
+    .upload {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px dashed #c9d4df;
+      border-radius: 14px;
+      padding: 14px;
+      background: #fafcfd;
+      transition: border-color .2s, background .2s;
+    }
+    .upload:hover { border-color: var(--cyan); background: #f2fcff; }
+    .upload-icon {
+      width: 38px; height: 38px; flex: 0 0 auto;
+      display: grid; place-items: center;
+      border-radius: 12px; background: var(--cyan-soft); font-size: 18px;
+    }
+    .upload-copy { min-width: 0; flex: 1; }
+    .upload-copy strong { display: block; font-size: 12px; }
+    .upload-copy small { display: block; color: var(--muted); font-size: 11px; }
+    input[type="file"] { width: 100%; max-width: 180px; font-size: 11px; }
+
+    .message {
+      display: none;
+      margin-top: 13px;
+      padding: 11px 12px;
+      border-radius: 11px;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+    .message.show { display: block; }
+    .message.error { color: #9f2937; background: #fff0f1; border: 1px solid #f5d7da; }
+    .message.success { color: #17694f; background: #eaf8f1; border: 1px solid #d2efe1; }
+    .message.info { color: #17677c; background: #eafaff; border: 1px solid #d3f4fb; }
+
+    .result-card { grid-column: 1 / -1; }
+    .result-top {
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .status {
+      display: inline-flex; align-items: center; gap: 7px;
+      color: var(--muted); font-size: 11px;
+    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #a8b0ba; }
+    .status.ready .status-dot { background: var(--good); }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 11px;
+      padding: 20px 22px 4px;
+    }
+
+    .metric {
+      min-width: 0;
+      border: 1px solid var(--line);
+      background: linear-gradient(150deg, #fff, #f8fafc);
+      border-radius: 16px;
+      padding: 16px;
+      transition: transform .22s, border-color .22s;
+    }
+    .metric:hover { transform: translateY(-3px); border-color: #b8edf7; }
+    .metric .name { color: var(--muted); font-size: 11px; font-weight: 650; }
+    .metric .value { margin-top: 7px; font-size: clamp(22px, 3vw, 30px); font-weight: 780; letter-spacing: -1.2px; overflow-wrap: anywhere; }
+    .metric .unit { color: var(--muted); font-size: 10px; }
+    .metric.cyan .value { color: #0085a3; }
+
+    .result-content { padding: 18px 22px 24px; }
+    .section-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 11px; }
+    .small-note { color: var(--muted); font-size: 10px; }
+
+    .base-bars { display: grid; gap: 11px; }
+    .base-row { display: grid; grid-template-columns: 24px minmax(0,1fr) 45px; align-items: center; gap: 10px; font-size: 12px; }
+    .base-letter { font-weight: 800; text-align: center; }
+    .track { height: 8px; border-radius: 20px; background: #edf0f3; overflow: hidden; }
+    .bar { height: 100%; width: 0; border-radius: inherit; transition: width .55s ease; }
+    .bar-a { background: #10b6d6; }
+    .bar-t { background: #6578db; }
+    .bar-g { background: #30a879; }
+    .bar-c { background: #e4a33e; }
+    .base-count { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .sequence-box {
+      margin-top: 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .sequence-head {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+      padding: 11px 13px; background: #f7f9fb; border-bottom: 1px solid var(--line);
+    }
+    .sequence-head strong { font-size: 11px; }
+    .sequence-text {
+      max-height: 150px; overflow: auto; padding: 13px;
+      font-family: "SFMono-Regular", Consolas, monospace; font-size: 11px;
+      line-height: 1.9; overflow-wrap: anywhere; white-space: pre-wrap;
+    }
+
+    .outputs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin-top: 18px;
+    }
+    .output {
+      min-width: 0; border: 1px solid var(--line); border-radius: 15px; overflow: hidden;
+    }
+    .output-head {
+      display: flex; justify-content: space-between; align-items: center; gap: 8px;
+      padding: 12px; background: #f8fafb; border-bottom: 1px solid var(--line);
+    }
+    .output-head strong { font-size: 12px; }
+    .output-body {
+      min-height: 100px; max-height: 170px; overflow: auto; padding: 12px;
+      font-family: "SFMono-Regular", Consolas, monospace; font-size: 11px;
+      line-height: 1.8; overflow-wrap: anywhere; white-space: pre-wrap;
+    }
+    .copy-btn { border: 0; background: transparent; color: var(--cyan-dark); font-size: 10px; font-weight: 800; padding: 5px; }
+
+    .empty {
+      padding: 28px 15px;
+      color: var(--muted); text-align: center; font-size: 12px;
+    }
+    .empty-symbol { font-size: 26px; margin-bottom: 7px; }
+
+    .about {
+      margin-top: 20px;
+      display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 14px;
+    }
+    .about-item {
+      padding: 18px; background: rgba(255,255,255,.72);
+      border: 1px solid var(--line); border-radius: 17px;
+    }
+    .about-icon { font-size: 19px; margin-bottom: 9px; }
+    .about-item h3 { margin-bottom: 5px; }
+    .about-item p { margin: 0; color: var(--muted); font-size: 11px; }
+
+    footer { padding: 24px 0 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .footer-inner strong { color: var(--ink); }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 900px) {
+      .hero { padding-top: 74px; }
+      .workspace { gap: 22px; }
+      .card-head { padding: 26px 26px 0; }
+      .card-body { padding: 22px 26px 26px; }
+    }
+
+    @media (max-width: 760px) {
+      .hero { padding: 42px 0 27px; }
+      .workspace { grid-template-columns: 1fr; }
+      .result-card { grid-column: auto; }
+      .metrics { grid-template-columns: repeat(2, minmax(0,1fr)); padding: 15px 15px 2px; gap: 9px; }
+      .metric { padding: 13px; }
+      .result-top { padding: 18px 16px; }
+      .result-content { padding: 16px; }
+      .about { grid-template-columns: 1fr; }
+      .card-head { padding: 20px 18px 0; }
+      .card-body { padding: 18px; }
+      .outputs { grid-template-columns: 1fr; }
+      .upload { align-items: flex-start; }
+      input[type="file"] { max-width: 155px; }
+    }
+
+    @media (max-width: 380px) {
+      .wrap { width: min(100% - 22px, 1120px); }
+      .nav-tag { display: none; }
+      .btn { padding: 10px 12px; }
+      .metrics { gap: 7px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
-<header>
-  <div class="brand">DNA<span>Insight</span></div>
-  <div class="tag">BIOINFORMATICS · SEQUENCE LAB</div>
-</header>
-
-<main>
-<section class="hero">
-  <div class="eyebrow">Your first bioinformatics project</div>
-  <h1>Explore life,<br><span>one sequence at a time.</span></h1>
-  <p>Analyze nucleotide composition, calculate GC content and transform DNA into RNA using an interactive sequence toolkit.</p>
-</section>
-
-<div class="layout">
-  <section class="card">
-    <h2>01 / Sequence input</h2>
-    <p class="muted">Paste a DNA sequence. Spaces and line breaks are ignored.</p>
-    <label for="sequence">DNA sequence (A, T, G, C)</label>
-    <textarea id="sequence" spellcheck="false" autocapitalize="characters" placeholder="ATGCGTACGTAGCTAGCTAA"></textarea>
-    <div class="actions">
-      <button class="primary" id="analyze">Analyze sequence ↗</button>
-      <button id="sample">Load sample</button>
-      <button id="clear">Clear</button>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#" aria-label="DNAInsight home">
+        <span class="logo" aria-hidden="true">⌘</span>
+        <span>DNAInsight</span>
+      </a>
+      <span class="nav-tag">A simple bioinformatics lab</span>
     </div>
-    <div id="status" class="status" role="status" aria-live="polite"></div>
-    <div class="notice">Educational tool only. Results depend on the sequence you provide; this tool does not diagnose disease or establish clinical significance.</div>
-  </section>
+  </header>
 
-  <section class="card">
-    <h2>02 / Analysis overview</h2>
-    <div class="stats">
-      <div class="stat"><small>Sequence length</small><strong id="length">—</strong></div>
-      <div class="stat"><small>GC content</small><strong id="gc">—</strong></div>
-      <div class="stat"><small>Purines (A + G)</small><strong id="purines">—</strong></div>
-      <div class="stat"><small>Pyrimidines (C + T)</small><strong id="pyrimidines">—</strong></div>
+  <main class="wrap">
+    <section class="hero">
+      <span class="eyebrow"><span class="pulse"></span> DNA sequence explorer</span>
+      <h1>Life, in <span class="gradient">every letter.</span></h1>
+      <p>Explore DNA sequences with clear, fast and beginner-friendly analysis. No account. No upload to a server.</p>
+      <div class="privacy"><span>● Private by design</span> · Analysis runs in your browser</div>
+    </section>
+
+    <section class="workspace" aria-label="DNA analysis workspace">
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <span class="step">01 / Input</span>
+            <h2>Your sequence</h2>
+            <p class="sub">Paste DNA or load a FASTA file.</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <label class="field-label" for="sequence">DNA sequence or FASTA content</label>
+          <textarea id="sequence" spellcheck="false" autocapitalize="characters"
+            aria-describedby="sequenceHint" placeholder="Example: ATGCGTACGTAGCTAGCTAG..."></textarea>
+          <p class="hint" id="sequenceHint">Allowed bases: A, T, G and C. Spaces and line breaks are ignored.</p>
+
+          <div class="actions">
+            <button class="btn secondary" id="sampleBtn" type="button">✦ Load sample</button>
+            <button class="btn secondary" id="clearBtn" type="button">Clear</button>
+          </div>
+
+          <div style="height:20px"></div>
+          <label class="field-label" for="fastaFile">Import a FASTA file</label>
+          <div class="upload">
+            <div class="upload-icon" aria-hidden="true">↥</div>
+            <div class="upload-copy">
+              <strong>Choose a sequence file</strong>
+              <small>.fasta, .fa, .fna or .txt · Max 10 MB</small>
+              <input id="fastaFile" type="file" accept=".fasta,.fa,.fna,.txt,text/plain">
+            </div>
+          </div>
+
+          <div id="recordWrap" hidden style="margin-top:15px">
+            <label class="field-label" for="recordSelect">Select a FASTA record</label>
+            <select id="recordSelect" aria-label="Choose a FASTA record"></select>
+            <p class="hint" id="recordHint"></p>
+          </div>
+
+          <div id="message" class="message" role="status" aria-live="polite"></div>
+
+          <div class="actions">
+            <button class="btn primary" id="analyzeBtn" type="button">Analyze sequence <span aria-hidden="true">→</span></button>
+            <button class="btn secondary" id="downloadBtn" type="button" disabled>↓ Download report</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <div>
+            <span class="step">02 / Analysis</span>
+            <h2>Sequence overview</h2>
+            <p class="sub">A quick summary of your DNA composition.</p>
+          </div>
+          <span class="status" id="status"><span class="status-dot"></span><span id="statusText">Waiting for input</span></span>
+        </div>
+
+        <div class="metrics" aria-live="polite">
+          <div class="metric cyan">
+            <div class="name">Sequence length</div>
+            <div class="value" id="lengthValue">—</div>
+            <div class="unit">base pairs</div>
+          </div>
+          <div class="metric">
+            <div class="name">GC content</div>
+            <div class="value" id="gcValue">—</div>
+            <div class="unit">percentage</div>
+          </div>
+          <div class="metric">
+            <div class="name">Purines (A + G)</div>
+            <div class="value" id="purineValue">—</div>
+            <div class="unit">bases</div>
+          </div>
+          <div class="metric">
+            <div class="name">Pyrimidines (C + T)</div>
+            <div class="value" id="pyrimidineValue">—</div>
+            <div class="unit">bases</div>
+          </div>
+        </div>
+
+        <div class="result-content">
+          <div class="section-title">
+            <h3>Nucleotide composition</h3>
+            <span class="small-note" id="compositionNote">Counts appear after analysis</span>
+          </div>
+          <div class="base-bars" id="baseBars">
+            <div class="empty"><div class="empty-symbol">⌬</div>Your sequence profile will appear here.</div>
+          </div>
+
+          <div class="sequence-box">
+            <div class="sequence-head">
+              <strong>Validated DNA sequence</strong>
+              <button class="copy-btn" type="button" id="copyDnaBtn" disabled>Copy sequence</button>
+            </div>
+            <div class="sequence-text" id="cleanSequence">No sequence analyzed yet.</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card result-card">
+        <div class="result-top">
+          <div>
+            <span class="step">03 / Transformations</span>
+            <h2>Explore your sequence</h2>
+            <p class="sub">Transcribe DNA to RNA or calculate the reverse complement.</p>
+          </div>
+        </div>
+        <div class="result-content">
+          <div class="outputs">
+            <section class="output">
+              <div class="output-head">
+                <strong>RNA transcription</strong>
+                <button class="copy-btn" type="button" data-copy="rnaOutput" disabled>Copy</button>
+              </div>
+              <div class="output-body" id="rnaOutput">RNA output will appear here.</div>
+            </section>
+            <section class="output">
+              <div class="output-head">
+                <strong>Reverse complement</strong>
+                <button class="copy-btn" type="button" data-copy="reverseOutput" disabled>Copy</button>
+              </div>
+              <div class="output-body" id="reverseOutput">Reverse complement will appear here.</div>
+            </section>
+          </div>
+          <p class="hint" style="margin-top:13px">Note: RNA transcription here replaces T with U. It does not identify a coding strand or predict proteins.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="about" aria-label="About DNAInsight">
+      <article class="about-item">
+        <div class="about-icon" aria-hidden="true">⌬</div>
+        <h3>Built for learning</h3>
+        <p>A beginner-friendly way to explore fundamental DNA sequence properties and bioinformatics concepts.</p>
+      </article>
+      <article class="about-item">
+        <div class="about-icon" aria-hidden="true">◈</div>
+        <h3>Local processing</h3>
+        <p>Your selected sequence is processed on this page. The tool does not send sequence data to a backend.</p>
+      </article>
+      <article class="about-item">
+        <div class="about-icon" aria-hidden="true">↗</div>
+        <h3>Simple by design</h3>
+        <p>Lightweight HTML, CSS and JavaScript, designed to work on phones, tablets and desktop browsers.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><strong>DNAInsight</strong> · An educational bioinformatics project</span>
+      <span>Made for curious minds · Not a clinical diagnostic tool</span>
     </div>
-    <div class="results">
-      <label>Nucleotide composition</label>
-      <div class="bar" id="bar" aria-label="Nucleotide composition">
-        <span class="a" style="width:25%"></span><span class="t" style="width:25%"></span><span class="g" style="width:25%"></span><span class="c" style="width:25%"></span>
-      </div>
-      <div class="legend">
-        <span><i class="dot a"></i>A: <b id="countA">—</b></span>
-        <span><i class="dot t"></i>T: <b id="countT">—</b></span>
-        <span><i class="dot g"></i>G: <b id="countG">—</b></span>
-        <span><i class="dot c"></i>C: <b id="countC">—</b></span>
-      </div>
-      <div class="result-line"><span>DNA → RNA transcription</span><span id="rnaLabel">—</span></div>
-      <div class="sequence" id="rna">Your RNA sequence will appear here.</div>
-      <div class="result-line"><span>Reverse complement</span><button id="reverse" disabled>Show result</button></div>
-      <div class="sequence hidden" id="reverseResult"></div>
-      <div class="actions">
-        <button id="download" disabled>Download report (.txt)</button>
-        <button id="copy" disabled>Copy RNA</button>
-      </div>
-    </div>
-  </section>
-</div>
+  </footer>
 
-<section class="card" style="margin-top:18px">
-  <h2>03 / About this tool</h2>
-  <p class="muted">DNAInsight is a student-built educational project for learning sequence analysis. GC content is the percentage of bases that are guanine or cytosine. Transcription here uses the coding-strand convention: replace T with U.</p>
-  <p class="muted">For real research, record the source and accession of each sequence, explain your methods, validate results independently and cite relevant literature.</p>
-</section>
-</main>
+  <script>
+    "use strict";
 
-<footer>
-  DNAInsight · Student Bioinformatics Project · Version 1.0<br>
-  Built for learning, reproducibility and scientific curiosity.
-</footer>
+    const $ = (id) => document.getElementById(id);
+    const sequenceInput = $("sequence");
+    const fastaFile = $("fastaFile");
+    const recordSelect = $("recordSelect");
+    const recordWrap = $("recordWrap");
+    const message = $("message");
 
-<script>
-(() => {
-  const $ = id => document.getElementById(id);
-  let last = null;
+    let fastaRecords = [];
+    let lastResult = null;
 
-  function resetResults() {
-    last = null;
-    ["length","gc","purines","pyrimidines","countA","countT","countG","countC"].forEach(id => $(id).textContent = "—");
-    $("bar").innerHTML = '<span class="a" style="width:25%"></span><span class="t" style="width:25%"></span><span class="g" style="width:25%"></span><span class="c" style="width:25%"></span>';
-    $("rnaLabel").textContent = "—";
-    $("rna").textContent = "Your RNA sequence will appear here.";
-    $("reverseResult").textContent = "";
-    $("reverseResult").classList.add("hidden");
-    $("reverse").disabled = true;
-    $("download").disabled = true;
-    $("copy").disabled = true;
-  }
-
-  function analyze() {
-    const raw = $("sequence").value.toUpperCase().replace(/\s+/g, "");
-    $("status").textContent = "";
-    resetResults();
-
-    if (!raw) {
-      $("status").textContent = "Enter a DNA sequence or load the sample.";
-      return;
+    function showMessage(text, type = "info") {
+      message.textContent = text;
+      message.className = "message show " + type;
     }
-    if (!/^[ATGC]+$/.test(raw)) {
-      $("status").textContent = "Invalid input: use only A, T, G and C. Remove FASTA headers and other symbols.";
-      return;
+
+    function hideMessage() {
+      message.textContent = "";
+      message.className = "message";
     }
 
-    const count = { A:0, T:0, G:0, C:0 };
-    for (const base of raw) count[base]++;
+    function setStatus(text, ready = false) {
+      $("statusText").textContent = text;
+      $("status").classList.toggle("ready", ready);
+    }
 
-    const gc = ((count.G + count.C) / raw.length) * 100;
-    const rna = raw.replace(/T/g, "U");
-    const complement = { A:"T", T:"A", G:"C", C:"G" };
-    const reverseComplement = [...raw].reverse().map(base => complement[base]).join("");
+    function resetResults() {
+      lastResult = null;
+      $("lengthValue").textContent = "—";
+      $("gcValue").textContent = "—";
+      $("purineValue").textContent = "—";
+      $("pyrimidineValue").textContent = "—";
+      $("compositionNote").textContent = "Counts appear after analysis";
+      $("baseBars").innerHTML =
+        '<div class="empty"><div class="empty-symbol">⌬</div>Your sequence profile will appear here.</div>';
+      $("cleanSequence").textContent = "No sequence analyzed yet.";
+      $("rnaOutput").textContent = "RNA output will appear here.";
+      $("reverseOutput").textContent = "Reverse complement will appear here.";
+      $("downloadBtn").disabled = true;
+      $("copyDnaBtn").disabled = true;
+      document.querySelectorAll("[data-copy]").forEach(button => button.disabled = true);
+      setStatus("Waiting for input", false);
+    }
 
-    last = { raw, count, gc, rna, reverseComplement };
-    $("length").textContent = raw.length.toLocaleString();
-    $("gc").textContent = gc.toFixed(2) + "%";
-    $("purines").textContent = count.A + count.G;
-    $("pyrimidines").textContent = count.C + count.T;
-    ["A","T","G","C"].forEach(base => {
-      $("count" + base).textContent = count[base];
+    function cleanSequence(raw) {
+      return raw.toUpperCase().replace(/\s+/g, "");
+    }
+
+    function validateSequence(raw) {
+      const cleaned = cleanSequence(raw);
+      if (!cleaned) return { ok: false, error: "Enter a DNA sequence or choose a FASTA record first." };
+      if (!/^[ATGC]+$/.test(cleaned)) {
+        const bad = [...new Set(cleaned.match(/[^ATGC]/g) || [])].slice(0, 8);
+        return {
+          ok: false,
+          error: "Invalid DNA characters found: " + bad.join(" ") +
+            ". Only A, T, G and C are supported. Remove headers or ambiguous bases."
+        };
+      }
+      return { ok: true, sequence: cleaned };
+    }
+
+    function parseFasta(text) {
+      const records = [];
+      let current = null;
+
+      for (const line of text.split(/\r?\n/)) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        if (trimmed.startsWith(">")) {
+          if (current) records.push(current);
+          const header = trimmed.slice(1).trim();
+          if (!header) throw new Error("A FASTA header is empty. Add a name after the > symbol.");
+          current = { name: header, chunks: [] };
+        } else {
+          if (!current) {
+            throw new Error("This file does not look like FASTA. Each sequence must start with a >header line.");
+          }
+          current.chunks.push(trimmed.replace(/\s+/g, ""));
+        }
+      }
+
+      if (current) records.push(current);
+      if (!records.length) throw new Error("No FASTA records were found in this file.");
+
+      return records.map((record, index) => {
+        const sequence = record.chunks.join("").toUpperCase();
+        if (!sequence) throw new Error('Record "' + record.name + '" has no sequence.');
+        const checked = validateSequence(sequence);
+        if (!checked.ok) throw new Error('Record "' + record.name + '": ' + checked.error);
+        return { name: record.name, sequence: checked.sequence, index };
+      });
+    }
+
+    function selectedFastaRecord() {
+      if (!fastaRecords.length || recordWrap.hidden) return null;
+      return fastaRecords[Number(recordSelect.value)] || null;
+    }
+
+    function analyze() {
+      hideMessage();
+      const checked = validateSequence(sequenceInput.value);
+      if (!checked.ok) {
+        resetResults();
+        showMessage(checked.error, "error");
+        sequenceInput.focus();
+        return;
+      }
+
+      const seq = checked.sequence;
+      const counts = {
+        A: (seq.match(/A/g) || []).length,
+        T: (seq.match(/T/g) || []).length,
+        G: (seq.match(/G/g) || []).length,
+        C: (seq.match(/C/g) || []).length
+      };
+      const length = seq.length;
+      const gc = ((counts.G + counts.C) / length) * 100;
+      const rna = seq.replace(/T/g, "U");
+      const reverse = seq.split("").reverse().map(base => ({
+        A: "T", T: "A", G: "C", C: "G"
+      })[base]).join("");
+
+      lastResult = {
+        sequence: seq, counts, length, gc,
+        purines: counts.A + counts.G,
+        pyrimidines: counts.C + counts.T,
+        rna, reverse,
+        recordName: selectedFastaRecord()?.name || "Pasted sequence",
+        date: new Date().toLocaleString()
+      };
+
+      $("lengthValue").textContent = length.toLocaleString();
+      $("gcValue").textContent = gc.toFixed(2) + "%";
+      $("purineValue").textContent = lastResult.purines.toLocaleString();
+      $("pyrimidineValue").textContent = lastResult.pyrimidines.toLocaleString();
+      $("compositionNote").textContent = "Total: " + length.toLocaleString() + " bases";
+
+      const classes = { A: "bar-a", T: "bar-t", G: "bar-g", C: "bar-c" };
+      $("baseBars").innerHTML = "";
+      for (const base of ["A", "T", "G", "C"]) {
+        const percentage = (counts[base] / length) * 100;
+        const row = document.createElement("div");
+        row.className = "base-row";
+        row.innerHTML =
+          '<span class="base-letter">' + base + '</span>' +
+          '<div class="track" role="img" aria-label="' + base + ': ' + percentage.toFixed(2) + '%">' +
+          '<div class="bar ' + classes[base] + '" style="width:' + percentage + '%"></div></div>' +
+          '<span class="base-count">' + counts[base].toLocaleString() + '</span>';
+        $("baseBars").appendChild(row);
+      }
+
+      $("cleanSequence").textContent = seq.match(/.{1,60}/g).join("\n");
+      $("rnaOutput").textContent = rna.match(/.{1,60}/g).join("\n");
+      $("reverseOutput").textContent = reverse.match(/.{1,60}/g).join("\n");
+      $("downloadBtn").disabled = false;
+      $("copyDnaBtn").disabled = false;
+      document.querySelectorAll("[data-copy]").forEach(button => button.disabled = false);
+      setStatus("Analysis complete", true);
+      showMessage("Sequence validated and analyzed successfully.", "success");
+    }
+
+    $("sampleBtn").addEventListener("click", () => {
+      fastaRecords = [];
+      recordWrap.hidden = true;
+      fastaFile.value = "";
+      sequenceInput.value = "ATGCGTACGTAGCTAGCTAGGCTAACGT";
+      hideMessage();
+      analyze();
     });
-    $("bar").innerHTML = ["A","T","G","C"].map(base =>
-      `<span class="${base.toLowerCase()}" title="${base}: ${count[base]}" style="width:${count[base]/raw.length*100}%"></span>`
-    ).join("");
-    $("rnaLabel").textContent = raw.length + " bases";
-    $("rna").textContent = rna;
-    $("reverse").disabled = false;
-    $("download").disabled = false;
-    $("copy").disabled = false;
-    $("status").textContent = "Analysis complete. Check your sequence and save your results.";
-  }
 
-  $("analyze").addEventListener("click", analyze);
-  $("sample").addEventListener("click", () => {
-    $("sequence").value = "ATGCGTACGTAGCTAGCTAA";
-    analyze();
-  });
-  $("clear").addEventListener("click", () => {
-    $("sequence").value = "";
-    $("status").textContent = "";
-    resetResults();
-  });
-  $("reverse").addEventListener("click", () => {
-    if (!last) return;
-    $("reverseResult").textContent = last.reverseComplement;
-    $("reverseResult").classList.remove("hidden");
-    $("reverse").textContent = "Shown ✓";
-  });
-  $("copy").addEventListener("click", async () => {
-    if (!last) return;
-    try {
-      await navigator.clipboard.writeText(last.rna);
-      $("status").textContent = "RNA sequence copied.";
-    } catch {
-      $("status").textContent = "Copy is unavailable in this browser. Select and copy the RNA sequence manually.";
+    $("clearBtn").addEventListener("click", () => {
+      sequenceInput.value = "";
+      fastaFile.value = "";
+      fastaRecords = [];
+      recordSelect.replaceChildren();
+      recordWrap.hidden = true;
+      hideMessage();
+      resetResults();
+      sequenceInput.focus();
+    });
+
+    $("analyzeBtn").addEventListener("click", analyze);
+
+    fastaFile.addEventListener("change", async () => {
+      hideMessage();
+      const file = fastaFile.files && fastaFile.files[0];
+      if (!file) return;
+
+      if (file.size > 10 * 1024 * 1024) {
+        fastaFile.value = "";
+        showMessage("This file is larger than 10 MB. Please choose a smaller file.", "error");
+        return;
+      }
+
+      try {
+        const content = await file.text();
+        const records = parseFasta(content);
+        fastaRecords = records;
+        recordSelect.replaceChildren();
+
+        records.forEach((record, index) => {
+          const option = document.createElement("option");
+          option.value = String(index);
+          option.textContent = record.name + " (" + record.sequence.length.toLocaleString() + " bases)";
+          recordSelect.appendChild(option);
+        });
+
+        recordWrap.hidden = false;
+        recordSelect.value = "0";
+        sequenceInput.value = records[0].sequence;
+        showMessage(
+          records.length + " FASTA record" + (records.length === 1 ? "" : "s") +
+          " loaded. Select a record, then analyze it.",
+          "success"
+        );
+        resetResults();
+      } catch (error) {
+        fastaRecords = [];
+        recordWrap.hidden = true;
+        fastaFile.value = "";
+        resetResults();
+        showMessage(error.message || "Could not read this FASTA file.", "error");
+      }
+    });
+
+    recordSelect.addEventListener("change", () => {
+      const record = selectedFastaRecord();
+      if (!record) return;
+      sequenceInput.value = record.sequence;
+      hideMessage();
+      resetResults();
+      showMessage('Selected record: "' + record.name + '". Tap Analyze sequence to continue.', "info");
+    });
+
+    $("copyDnaBtn").addEventListener("click", () => copyText(lastResult?.sequence, "DNA sequence"));
+    document.querySelectorAll("[data-copy]").forEach(button => {
+      button.addEventListener("click", () => {
+        if (!lastResult) return;
+        const id = button.dataset.copy;
+        copyText(id === "rnaOutput" ? lastResult.rna : lastResult.reverse,
+          id === "rnaOutput" ? "RNA sequence" : "Reverse complement");
+      });
+    });
+
+    async function copyText(text, label) {
+      if (!text) return;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          const temp = document.createElement("textarea");
+          temp.value = text;
+          temp.style.position = "fixed";
+          temp.style.opacity = "0";
+          document.body.appendChild(temp);
+          temp.select();
+          const ok = document.execCommand("copy");
+          temp.remove();
+          if (!ok) throw new Error("Copy failed");
+        }
+        showMessage(label + " copied to clipboard.", "success");
+      } catch {
+        showMessage("Copy was blocked by your browser. Select and copy the text manually.", "error");
+      }
     }
-  });
-  $("download").addEventListener("click", () => {
-    if (!last) return;
-    const {raw,count,gc,rna,reverseComplement} = last;
-    const report = [
-      "DNAInsight Sequence Analysis Report",
-      "===================================",
-      "Sequence length: " + raw.length,
-      "A: " + count.A, "T: " + count.T,
-      "G: " + count.G, "C: " + count.C,
-      "GC content: " + gc.toFixed(2) + "%",
-      "Purines (A+G): " + (count.A+count.G),
-      "Pyrimidines (C+T): " + (count.C+count.T),
-      "", "DNA sequence:", raw, "", "RNA sequence:", rna,
-      "", "Reverse complement:", reverseComplement,
-      "", "Educational analysis; verify before research use."
-    ].join("\n");
-    const blob = new Blob([report], {type:"text/plain;charset=utf-8"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = "DNAInsight-report.txt"; a.click();
-    URL.revokeObjectURL(url);
-  });
-})();
-</script>
+
+    $("downloadBtn").addEventListener("click", () => {
+      if (!lastResult) return;
+      const r = lastResult;
+      const report = [
+        "DNAInsight — DNA Sequence Analysis Report",
+        "==========================================",
+        "Record: " + r.recordName,
+        "Generated: " + r.date,
+        "",
+        "SUMMARY",
+        "Sequence length: " + r.length,
+        "GC content: " + r.gc.toFixed(2) + "%",
+        "Purines (A + G): " + r.purines,
+        "Pyrimidines (C + T): " + r.pyrimidines,
+        "",
+        "NUCLEOTIDE COUNTS",
+        "A: " + r.counts.A,
+        "T: " + r.counts.T,
+        "G: " + r.counts.G,
+        "C: " + r.counts.C,
+        "",
+        "VALIDATED DNA SEQUENCE",
+        r.sequence.match(/.{1,60}/g).join("\n"),
+        "",
+        "RNA TRANSCRIPTION (T replaced with U)",
+        r.rna.match(/.{1,60}/g).join("\n"),
+        "",
+        "REVERSE COMPLEMENT",
+        r.reverse.match(/.{1,60}/g).join("\n"),
+        "",
+        "Educational output only; not a clinical diagnostic report."
+      ].join("\n");
+
+      const blob = new Blob([report], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "DNAInsight-report.txt";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      showMessage("Your analysis report download has started.", "success");
+    });
+
+    sequenceInput.addEventListener("input", () => {
+      if (lastResult) {
+        resetResults();
+        showMessage("Input changed. Analyze again to refresh the results.", "info");
+      }
+    });
+
+    resetResults();
+  </script>
 </body>
 </html>
-
