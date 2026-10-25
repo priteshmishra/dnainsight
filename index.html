@@ -947,6 +947,21 @@
       };
       const length = seq.length;
       const gc = ((counts.G + counts.C) / length) * 100;
+      
+$("gcGaugeValue").textContent = gc.toFixed(2) + "%";
+$("gcGValue").textContent = "G: " + counts.G.toLocaleString();
+$("gcCValue").textContent = "C: " + counts.C.toLocaleString();
+
+$("gcGauge").style.setProperty("--gc-angle", (gc * 3.6) + "deg");
+$("gcGauge").setAttribute(
+  "aria-label",
+  "GC content: " + gc.toFixed(2) + " percent"
+);
+$("gcProgress").style.width = gc + "%";
+
+$("gcExplainer").textContent =
+  gc.toFixed(2) + "% of this sequence consists of guanine and cytosine bases.";
+
       const rna = seq.replace(/T/g, "U");
       const reverse = seq.split("").reverse().map(base => ({
         A: "T", T: "A", G: "C", C: "G"
