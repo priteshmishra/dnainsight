@@ -560,6 +560,41 @@
         </div>
 
         <div class="result-content">
+          
+<div class="gc-visual-card">
+  <div class="gc-visual-heading">
+    <div>
+      <span class="gc-kicker">SEQUENCE COMPOSITION</span>
+      <h3>GC Content</h3>
+      <p>Guanine + Cytosine as a percentage of total bases</p>
+    </div>
+    <span class="gc-dna-icon">⌬</span>
+  </div>
+
+  <div class="gc-gauge-wrap">
+    <div class="gc-gauge" id="gcGauge" role="img" aria-label="GC content not calculated">
+      <div class="gc-gauge-center">
+        <strong id="gcGaugeValue">—</strong>
+        <span>GC CONTENT</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="gc-legend">
+    <span><i class="gc-dot gc-dot-g"></i>Guanine (G)</span>
+    <strong id="gcGValue">G: —</strong>
+    <span><i class="gc-dot gc-dot-c"></i>Cytosine (C)</span>
+    <strong id="gcCValue">C: —</strong>
+  </div>
+
+  <div class="gc-progress-track">
+    <div id="gcProgress" class="gc-progress"></div>
+  </div>
+  <p class="gc-explainer" id="gcExplainer">
+    Analyze a DNA sequence to see its GC composition.
+  </p>
+</div>
+
           <div class="section-title">
             <h3>Nucleotide composition</h3>
             <span class="small-note" id="compositionNote">Counts appear after analysis</span>
