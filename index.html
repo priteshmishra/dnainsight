@@ -458,7 +458,164 @@
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
       }
-    }
+    } 
+/* DNAInsight — GC Content Visualization */
+.gc-visual-card {
+  margin: 0 0 24px;
+  padding: 20px;
+  border: 1px solid #dfe8ee;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffffff, #f3f9fc);
+  box-shadow: 0 8px 24px rgba(25, 66, 88, 0.05);
+}
+
+.gc-visual-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.gc-kicker {
+  color: #0085a3;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.gc-visual-heading h3 {
+  margin: 5px 0;
+  font-size: 20px;
+  letter-spacing: -0.5px;
+}
+
+.gc-visual-heading p {
+  margin: 0;
+  color: #747d89;
+  font-size: 11px;
+}
+
+.gc-dna-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: #e3faff;
+  color: #0085a3;
+  font-size: 25px;
+}
+
+.gc-gauge-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 25px 0 20px;
+}
+
+.gc-gauge {
+  --gc-angle: 0deg;
+  width: 176px;
+  height: 176px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: conic-gradient(
+    from -90deg,
+    #00bfe8 var(--gc-angle),
+    #e8edf2 var(--gc-angle)
+  );
+  position: relative;
+  transition: background 0.5s ease;
+}
+
+.gc-gauge::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #edf1f4;
+}
+
+.gc-gauge-center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.gc-gauge-center strong {
+  color: #20252d;
+  font-size: 34px;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+}
+
+.gc-gauge-center span {
+  color: #747d89;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.gc-legend {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px 14px;
+  align-items: center;
+  font-size: 11px;
+  color: #697583;
+}
+
+.gc-legend strong {
+  color: #20252d;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.gc-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 50%;
+}
+
+.gc-dot-g { background: #00bfe8; }
+.gc-dot-c { background: #6578db; }
+
+.gc-progress-track {
+  height: 7px;
+  margin-top: 17px;
+  border-radius: 20px;
+  background: #e8edf2;
+  overflow: hidden;
+}
+
+.gc-progress {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #00bfe8, #6578db);
+  transition: width 0.55s ease;
+}
+
+.gc-explainer {
+  margin: 12px 0 0;
+  color: #747d89;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+@media (max-width: 380px) {
+  .gc-visual-card { padding: 15px; }
+  .gc-gauge { width: 150px; height: 150px; }
+  .gc-gauge-center strong { font-size: 29px; }
+}
+
   </style>
 </head>
 <body>
