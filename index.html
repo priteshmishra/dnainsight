@@ -1,1 +1,287 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<meta name="description" content="DNAInsight is a beginner-friendly interactive DNA sequence analysis tool.">
+<title>DNAInsight | Sequence Lab</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #07111f;
+  --panel: #101d30;
+  --line: #25374d;
+  --cyan: #53f5e5;
+  --violet: #b5a0ff;
+  --text: #eff7ff;
+  --muted: #9eafc5;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background:
+    radial-gradient(ellipse at 15% 0%, #15314a 0%, transparent 42%),
+    radial-gradient(ellipse at 100% 30%, #241943 0%, transparent 35%),
+    var(--bg);
+  color: var(--text); font-family: system-ui, sans-serif;
+  min-height: 100vh;
+}
+header, main, footer { width: min(1080px, 92%); margin: auto; }
+header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:22px 0; gap:12px; border-bottom:1px solid var(--line);
+}
+.brand { font-size:21px; font-weight:800; letter-spacing:-.8px; }
+.brand span { color:var(--cyan); }
+.tag { color:var(--muted); font-size:12px; }
+.hero { padding:46px 0 28px; }
+.eyebrow {
+  color:var(--cyan); text-transform:uppercase; letter-spacing:2px;
+  font-size:11px; font-weight:800;
+}
+h1 { font-size:clamp(35px,7vw,64px); line-height:1.05; margin:12px 0; letter-spacing:-2px; }
+h1 span {
+  background:linear-gradient(90deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+p { line-height:1.7; }
+.hero p, .muted { color:var(--muted); }
+.layout { display:grid; grid-template-columns:1.1fr .9fr; gap:18px; }
+.card {
+  background:linear-gradient(145deg,#122138f5,#0c1727f5);
+  border:1px solid var(--line); border-radius:18px; padding:22px;
+  min-width:0; box-shadow:0 15px 50px #0002;
+}
+.card h2 { margin-top:0; font-size:19px; }
+label { display:block; margin:16px 0 8px; font-size:13px; color:#c4d5e9; }
+textarea, input, select {
+  width:100%; border:1px solid #344961; border-radius:10px;
+  background:#071321; color:var(--text); padding:13px;
+  font:inherit; outline:none;
+}
+textarea { min-height:150px; resize:vertical; font-family:monospace; }
+textarea:focus, input:focus, select:focus { border-color:var(--cyan); }
+button {
+  border:1px solid #3a536d; border-radius:10px; padding:11px 14px;
+  background:#172a40; color:var(--text); font-weight:700;
+  cursor:pointer; transition:transform .2s,border-color .2s;
+}
+button:hover { border-color:var(--cyan); transform:translateY(-2px); }
+.primary { background:var(--cyan); color:#06151b; border-color:var(--cyan); }
+.actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:13px; }
+.hint { font-size:12px; color:var(--muted); }
+.status { font-size:13px; margin-top:12px; min-height:20px; }
+.stats { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.stat { background:#091525; border:1px solid var(--line); border-radius:12px; padding:15px; }
+.stat small { display:block; color:var(--muted); margin-bottom:8px; }
+.stat strong { font-size:26px; color:var(--cyan); overflow-wrap:anywhere; }
+.bar { display:flex; height:13px; border-radius:8px; overflow:hidden; margin:15px 0; background:#26354b; }
+.bar span { transition:width .4s; }
+.a {background:#4da3ff}.t {background:#ffb454}
+.g {background:#65e6a5}.c {background:#bb91ff}
+.legend { display:flex; flex-wrap:wrap; gap:12px; font-size:12px; color:var(--muted); }
+.dot {display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.results { margin-top:18px; }
+.result-line { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); font-size:14px; }
+.sequence {
+  font-family:monospace; overflow-wrap:anywhere; line-height:1.9;
+  color:var(--cyan); background:#071321; border-radius:10px;
+  padding:12px; margin-top:12px; font-size:13px;
+}
+.notice { background:#172c39; border:1px solid #28505a; padding:12px; border-radius:10px; font-size:12px; color:#c5e9e8; margin-top:16px; }
+footer { border-top:1px solid var(--line); margin-top:35px; padding:22px 0 35px; color:var(--muted); font-size:12px; }
+.hidden { display:none; }
+@media(max-width:700px) {
+  .layout {grid-template-columns:1fr}
+  .hero {padding-top:32px}
+  .card {padding:17px}
+  h1 {letter-spacing:-1.4px}
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {scroll-behavior:auto!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">DNA<span>Insight</span></div>
+  <div class="tag">BIOINFORMATICS · SEQUENCE LAB</div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="eyebrow">Your first bioinformatics project</div>
+  <h1>Explore life,<br><span>one sequence at a time.</span></h1>
+  <p>Analyze nucleotide composition, calculate GC content and transform DNA into RNA using an interactive sequence toolkit.</p>
+</section>
+
+<div class="layout">
+  <section class="card">
+    <h2>01 / Sequence input</h2>
+    <p class="muted">Paste a DNA sequence. Spaces and line breaks are ignored.</p>
+    <label for="sequence">DNA sequence (A, T, G, C)</label>
+    <textarea id="sequence" spellcheck="false" autocapitalize="characters" placeholder="ATGCGTACGTAGCTAGCTAA"></textarea>
+    <div class="actions">
+      <button class="primary" id="analyze">Analyze sequence ↗</button>
+      <button id="sample">Load sample</button>
+      <button id="clear">Clear</button>
+    </div>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <div class="notice">Educational tool only. Results depend on the sequence you provide; this tool does not diagnose disease or establish clinical significance.</div>
+  </section>
+
+  <section class="card">
+    <h2>02 / Analysis overview</h2>
+    <div class="stats">
+      <div class="stat"><small>Sequence length</small><strong id="length">—</strong></div>
+      <div class="stat"><small>GC content</small><strong id="gc">—</strong></div>
+      <div class="stat"><small>Purines (A + G)</small><strong id="purines">—</strong></div>
+      <div class="stat"><small>Pyrimidines (C + T)</small><strong id="pyrimidines">—</strong></div>
+    </div>
+    <div class="results">
+      <label>Nucleotide composition</label>
+      <div class="bar" id="bar" aria-label="Nucleotide composition">
+        <span class="a" style="width:25%"></span><span class="t" style="width:25%"></span><span class="g" style="width:25%"></span><span class="c" style="width:25%"></span>
+      </div>
+      <div class="legend">
+        <span><i class="dot a"></i>A: <b id="countA">—</b></span>
+        <span><i class="dot t"></i>T: <b id="countT">—</b></span>
+        <span><i class="dot g"></i>G: <b id="countG">—</b></span>
+        <span><i class="dot c"></i>C: <b id="countC">—</b></span>
+      </div>
+      <div class="result-line"><span>DNA → RNA transcription</span><span id="rnaLabel">—</span></div>
+      <div class="sequence" id="rna">Your RNA sequence will appear here.</div>
+      <div class="result-line"><span>Reverse complement</span><button id="reverse" disabled>Show result</button></div>
+      <div class="sequence hidden" id="reverseResult"></div>
+      <div class="actions">
+        <button id="download" disabled>Download report (.txt)</button>
+        <button id="copy" disabled>Copy RNA</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="card" style="margin-top:18px">
+  <h2>03 / About this tool</h2>
+  <p class="muted">DNAInsight is a student-built educational project for learning sequence analysis. GC content is the percentage of bases that are guanine or cytosine. Transcription here uses the coding-strand convention: replace T with U.</p>
+  <p class="muted">For real research, record the source and accession of each sequence, explain your methods, validate results independently and cite relevant literature.</p>
+</section>
+</main>
+
+<footer>
+  DNAInsight · Student Bioinformatics Project · Version 1.0<br>
+  Built for learning, reproducibility and scientific curiosity.
+</footer>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  let last = null;
+
+  function resetResults() {
+    last = null;
+    ["length","gc","purines","pyrimidines","countA","countT","countG","countC"].forEach(id => $(id).textContent = "—");
+    $("bar").innerHTML = '<span class="a" style="width:25%"></span><span class="t" style="width:25%"></span><span class="g" style="width:25%"></span><span class="c" style="width:25%"></span>';
+    $("rnaLabel").textContent = "—";
+    $("rna").textContent = "Your RNA sequence will appear here.";
+    $("reverseResult").textContent = "";
+    $("reverseResult").classList.add("hidden");
+    $("reverse").disabled = true;
+    $("download").disabled = true;
+    $("copy").disabled = true;
+  }
+
+  function analyze() {
+    const raw = $("sequence").value.toUpperCase().replace(/\s+/g, "");
+    $("status").textContent = "";
+    resetResults();
+
+    if (!raw) {
+      $("status").textContent = "Enter a DNA sequence or load the sample.";
+      return;
+    }
+    if (!/^[ATGC]+$/.test(raw)) {
+      $("status").textContent = "Invalid input: use only A, T, G and C. Remove FASTA headers and other symbols.";
+      return;
+    }
+
+    const count = { A:0, T:0, G:0, C:0 };
+    for (const base of raw) count[base]++;
+
+    const gc = ((count.G + count.C) / raw.length) * 100;
+    const rna = raw.replace(/T/g, "U");
+    const complement = { A:"T", T:"A", G:"C", C:"G" };
+    const reverseComplement = [...raw].reverse().map(base => complement[base]).join("");
+
+    last = { raw, count, gc, rna, reverseComplement };
+    $("length").textContent = raw.length.toLocaleString();
+    $("gc").textContent = gc.toFixed(2) + "%";
+    $("purines").textContent = count.A + count.G;
+    $("pyrimidines").textContent = count.C + count.T;
+    ["A","T","G","C"].forEach(base => {
+      $("count" + base).textContent = count[base];
+    });
+    $("bar").innerHTML = ["A","T","G","C"].map(base =>
+      `<span class="${base.toLowerCase()}" title="${base}: ${count[base]}" style="width:${count[base]/raw.length*100}%"></span>`
+    ).join("");
+    $("rnaLabel").textContent = raw.length + " bases";
+    $("rna").textContent = rna;
+    $("reverse").disabled = false;
+    $("download").disabled = false;
+    $("copy").disabled = false;
+    $("status").textContent = "Analysis complete. Check your sequence and save your results.";
+  }
+
+  $("analyze").addEventListener("click", analyze);
+  $("sample").addEventListener("click", () => {
+    $("sequence").value = "ATGCGTACGTAGCTAGCTAA";
+    analyze();
+  });
+  $("clear").addEventListener("click", () => {
+    $("sequence").value = "";
+    $("status").textContent = "";
+    resetResults();
+  });
+  $("reverse").addEventListener("click", () => {
+    if (!last) return;
+    $("reverseResult").textContent = last.reverseComplement;
+    $("reverseResult").classList.remove("hidden");
+    $("reverse").textContent = "Shown ✓";
+  });
+  $("copy").addEventListener("click", async () => {
+    if (!last) return;
+    try {
+      await navigator.clipboard.writeText(last.rna);
+      $("status").textContent = "RNA sequence copied.";
+    } catch {
+      $("status").textContent = "Copy is unavailable in this browser. Select and copy the RNA sequence manually.";
+    }
+  });
+  $("download").addEventListener("click", () => {
+    if (!last) return;
+    const {raw,count,gc,rna,reverseComplement} = last;
+    const report = [
+      "DNAInsight Sequence Analysis Report",
+      "===================================",
+      "Sequence length: " + raw.length,
+      "A: " + count.A, "T: " + count.T,
+      "G: " + count.G, "C: " + count.C,
+      "GC content: " + gc.toFixed(2) + "%",
+      "Purines (A+G): " + (count.A+count.G),
+      "Pyrimidines (C+T): " + (count.C+count.T),
+      "", "DNA sequence:", raw, "", "RNA sequence:", rna,
+      "", "Reverse complement:", reverseComplement,
+      "", "Educational analysis; verify before research use."
+    ].join("\n");
+    const blob = new Blob([report], {type:"text/plain;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "DNAInsight-report.txt"; a.click();
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
+</body>
+</html>
+
